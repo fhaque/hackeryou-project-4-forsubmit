@@ -9,4 +9,6 @@ const CONSTANTS = {
     moviePosterBGResolution: 'original',
     moviePosterThumbResolution: 'w154',
 
+    movieSearchResultCountLimit: 6,
+
 };

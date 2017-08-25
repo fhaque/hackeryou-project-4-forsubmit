@@ -18,11 +18,19 @@ class MovieApp {
             }
         })
         .then( (res) => {
-            this.createSearchResultsFromResponse(res.results);
-        } );
+            let results;
+
+            if (res.results.length > CONSTANTS.movieSearchResultCountLimit) {
+                results = res.results.slice(0, CONSTANTS.movieSearchResultCountLimit);
+            }
+
+            this.createSearchResultsFromResponse(results);
+        } )
+        .fail( (err) => console.log(err) );
     }
 
     createSearchResultsFromResponse(responseArray) {
+
         for (let movie of responseArray) {
             this.searchResults.push( new Movie( movie ) );
         }
