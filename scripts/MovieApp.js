@@ -1,6 +1,8 @@
 class MovieApp {
-    constructor() {
+    constructor(domContainer) {
         this.searchResults = [];
+
+        this.el = domContainer;
     }
 
     getMovieList(query) {
@@ -18,25 +20,29 @@ class MovieApp {
             }
         })
         .then( (res) => {
-            let results;
+            
+            this.createMovieArrayFromResponse(res.results);
 
-            if (res.results.length > CONSTANTS.movieSearchResultCountLimit) {
-                results = res.results.slice(0, CONSTANTS.movieSearchResultCountLimit);
-            }
-
-            this.createSearchResultsFromResponse(results);
+            this.displayResults();
         } )
         .fail( (err) => console.log(err) );
     }
 
-    createSearchResultsFromResponse(responseArray) {
+    createMovieArrayFromResponse(responseArray) {
+
+        if (responseArray.length > CONSTANTS.movieSearchResultCountLimit) {
+            responseArray = responseArray.slice(0, CONSTANTS.movieSearchResultCountLimit);
+        }
 
         for (let movie of responseArray) {
-            this.searchResults.push( new Movie( movie ) );
+            this.searchResults.push( new Movie( movie, this ) );
         }
 
         console.log(this.searchResults);
     }
 
+    displayResults() {
+        this.el.append( this.searchResults.map( (movie) => movie.el) );
+    }
 
 }

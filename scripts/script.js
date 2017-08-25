@@ -1,3 +1,5 @@
-const app = new MovieApp();
+const $appContainer = $('body');
+
+const app = new MovieApp($appContainer);
 
 app.getMovieList('fight club');
