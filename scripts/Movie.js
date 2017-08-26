@@ -17,13 +17,13 @@ class Movie {
 
         this.createDomElement();        
 
-        this.getKeywords();
+        // this.getKeywords();
 
         
     }
 
     getKeywords() {
-        $.ajax({
+        return $.ajax({
             url: CONSTANTS.movieMovieBaseUrl + this.id + '/keywords',
             method: 'GET',
             dataType: 'json',
@@ -35,7 +35,7 @@ class Movie {
         .then( (res) => {
             this.keywords = res.keywords;
 
-            this.addKeywordsToDom();
+            // this.addKeywordsToDom();
         });
     }
 

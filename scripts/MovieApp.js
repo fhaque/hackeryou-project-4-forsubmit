@@ -1,6 +1,8 @@
 class MovieApp {
     constructor(domContainer) {
         this.searchResults = [];
+        this.foreignFilmResults = [];
+        this.movieSelected = {};
 
         this.el = domContainer;
 
@@ -24,10 +26,9 @@ class MovieApp {
             }
         })
         .then( (res) => {
-            
-            this.createMovieArrayFromResponse(res.results);
+            this.searchResults = this.createMovieArrayFromResponse(res.results);
 
-            this.displayResults();
+            this.displayResults(this.searchResults);
         } )
         .fail( (err) => console.log(err) );
     }
@@ -47,41 +48,54 @@ class MovieApp {
     }
 
     createMovieArrayFromResponse(responseArray) {
-        this.searchResults = [];
+        const searchResults = [];
 
         if (responseArray.length > CONSTANTS.movieSearchResultCountLimit) {
             responseArray = responseArray.slice(0, CONSTANTS.movieSearchResultCountLimit);
         }
 
         for (let movie of responseArray) {
-            this.searchResults.push( new Movie( movie, this ) );
+            searchResults.push( new Movie( movie, this ) );
         }
 
-        console.log(this.searchResults);
+        console.log(searchResults);
+
+        return searchResults;
     }
 
 
-    displayResults() {
-        this.el.append( this.searchResults.map( (movie) => movie.el) );
+    displayResults(results) {
+        this.el.empty();
+        if ( !$.isEmptyObject(this.movieSelected) ) {
+            this.el.append(this.movieSelected.el);
+        }
+
+        this.el.append( results.map( (movie) => movie.el) );
     }
 
     movieClickHandle(movie) {
-        let categoriesObj = {};
-        //pick category to search
-        if ('keywords' in movie) {
-            categoriesObj.keyword = movie.keywords[Math.floor( Math.random() * movie.keywords.length )].id;
-        }
+        this.movieSelected = movie;
+        this.movieSelected.getKeywords().then( () => {
 
-        if ('genre_ids' in movie){
-            categoriesObj.genre = movie.genre_ids[ Math.floor( Math.random() * movie.genre_ids.length ) ];
+            let categoriesObj = {};
+            //pick category to search
+            if ('keywords' in movie) {
+                categoriesObj.keyword = movie.keywords[Math.floor( Math.random() * movie.keywords.length )].id;
+            }
+    
+            if ('genre_ids' in movie){
+                categoriesObj.genre = movie.genre_ids[ Math.floor( Math.random() * movie.genre_ids.length ) ];
+    
+            } 
+            
+            if ( $.isEmptyObject(categoriesObj) ) {
+                console.log('No category to search for foreign film');
+            }
+    
+            this.getForeignFilms(categoriesObj);
 
-        } 
+        });
         
-        if ( $.isEmptyObject(categoriesObj) ) {
-            console.log('No category to search for foreign film');
-        }
-
-        this.getForeignFilms(categoriesObj);
     }
 
     getForeignFilms(categoriesObj) {
@@ -100,7 +114,9 @@ class MovieApp {
             }
         })
         .then( (res) => {
-            console.log(res);
+            this.foreignFilmResults = this.createMovieArrayFromResponse(res.results);
+
+            this.displayResults(this.foreignFilmResults);            
         });
     }
 
