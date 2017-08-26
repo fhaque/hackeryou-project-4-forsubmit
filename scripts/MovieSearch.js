@@ -24,12 +24,14 @@ class MovieSearch {
     initEvents() {
         const self = this;
 
+        self.el.off(); //clear any potential other handlers.
+
         self.el.on('submit', function(e) {
             e.preventDefault();
 
             this.query = self.el.children('input[class="searchForm__searchBar"]').val();
             console.log(this.query);
-            self.movieApp.getMovieList(this.query);
+            self.movieApp.updateMovieAppState('searchResults', this.query);
         });
     }
 

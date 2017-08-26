@@ -28,10 +28,9 @@ class MovieApp {
 
 /************* INITIALIZATION FUNCTIONS *********/
     initDisplay() {
-        //create header of movie app and add search bar
+        //create header of movie app
         this.headerContainer = {};
         this.headerContainer.el = $('<header>').addClass('movieApp__headerContainer');
-        this.headerContainer.el.append(this.searchBar.el);
 
         //create the results container of the app containing all results
         this.resultsContainer = {};
@@ -41,33 +40,73 @@ class MovieApp {
     }
 
 /************* STATE UPDATES *******************/
-    updateMovieAppState(state) {
-        this.updateToState[state]();
+    updateMovieAppState(state, data) {
+        this.updateToState[state](data);
     }
 
     updateNewSearch() {
         this.displayNewSearch();
     }
 
-    updateSearchResults() {
-        console.log('update to search results');
-        console.log(this);
-        this.displaySearchResults();
+    updateSearchResults(query) {
+        if (query !== '' && query !== undefined) {
+            this.getMovieList(query)
+            .then( () => {
+                this.displaySearchResults();
+            });
+        } else {
+            this.updateMovieAppState('newSearch');
+        }
     }
 
-    updateResultsFromPick() {
-        this.displayResultsFromPick();
+    //get the keywords of the selected movie and pick
+    //category and keyword from movie. Search for it,
+    //then display results.
+    updateResultsFromPick(movie) {
+        if ( movie !== undefined ) {
+            this.movieSelected = movie;
+            this.movieSelected.getKeywords().then( () => {
+
+                let categoriesObj = {};
+                //pick category to search
+                if ('keywords' in movie) {
+                    categoriesObj.keyword = movie.keywords[Math.floor( Math.random() * movie.keywords.length )].id;
+                }
+        
+                if ('genre_ids' in movie){
+                    categoriesObj.genre = movie.genre_ids[ Math.floor( Math.random() * movie.genre_ids.length ) ];
+        
+                } 
+                
+                if ( $.isEmptyObject(categoriesObj) ) {
+                    console.log('No category to search for foreign film');
+                }
+                
+                console.log("ResultFromPick this:", this);
+                this.getForeignFilms(categoriesObj)
+                .then( () => this.displayResultsFromPick() );
+
+            });
+
+        } else {
+            this.displayResultsFromPick();
+        }
     }
 
-    updateMovieInfo() {
-        this.displayMovieInfo();
+    updateMovieInfo(movie) {
+        this.displayMovieInfo(movie);
     }
 
 /********* DISPLAY FUNCTIONS  *************/
     displayNewSearch() {
+        const $header = this.headerContainer.el;
         const $results = this.resultsContainer.el;
-        $results.empty();
 
+        $header.empty();
+        this.searchBar.initEvents(); //re-bind event handlers
+        $header.append( this.searchBar.el );
+
+        $results.empty();
         $results.append(`<p class="movieApp__searchMessage">Please try a new search.`);
     }
 
@@ -79,21 +118,34 @@ class MovieApp {
     }
 
     displayResultsFromPick() {
+        const $header = this.headerContainer.el;
         const $results = this.resultsContainer.el;
-        $results.empty();
 
-        $results.append( this.movieSelected.el.addClass('movie--selected') );
+        $header.empty();
+        $header.append( this.movieSelected.el.addClass('movie--selected') );
+        $header.append( this.createNewSearchBtn() );
+
+
+        $results.empty();
         this.appendMovieListToDomElement($results, this.foreignFilmResults);
     }
 
-    displayMovieInfo() {
-        console.log('displayMovieInfo: need to code');
+    displayMovieInfo(movie) {
+        const $header = this.headerContainer.el;
+        const $results = this.resultsContainer.el;
+
+        $header.empty();
+        $header.append( this.createToResultsFromPickBtn() );
+        $header.append( this.createNewSearchBtn() );
+
+        $results.empty();
+
     }
 
 
 /************* GET FUNCTIONS *******************/
     getMovieList(query) {
-        $.ajax({
+        return $.ajax({
             url: CONSTANTS.movieSearchUrl,
             method: 'GET',
             dataType: 'json',
@@ -107,15 +159,14 @@ class MovieApp {
             }
         })
         .then( (res) => {
+            console.log(res);
             this.searchResults = this.createMovieArrayFromResponse(res.results);
-
-            this.updateMovieAppState('searchResults');
         } )
         .fail( (err) => console.log(err) );
     }
 
     getGenreList() {
-        $.ajax({
+        return $.ajax({
             url: CONSTANTS.movieGenreListUrl,
             method: 'GET',
             dataType: 'json',
@@ -131,7 +182,7 @@ class MovieApp {
     getForeignFilms(categoriesObj) {
         console.log(categoriesObj);
 
-        $.ajax({
+        return $.ajax({
             url: CONSTANTS.movieDiscoverUrl,
             method: 'GET',
             dataType: 'json',
@@ -144,9 +195,7 @@ class MovieApp {
             }
         })
         .then( (res) => {
-            this.foreignFilmResults = this.createMovieArrayFromResponse(res.results);
-
-            this.updateMovieAppState('resultsFromPick');            
+            this.foreignFilmResults = this.createExpandableMovieArrayFromResponse(res.results);          
         });
     }
 
@@ -154,28 +203,20 @@ class MovieApp {
 /****** EVENT HANDLE FUNCTIONS  ********/
 
     movieClickHandle(movie) {
-        this.movieSelected = movie;
-        this.movieSelected.getKeywords().then( () => {
+        if (movie.constructor === ExpandableMovie) {
+            this.expandableMovieHandle(movie);
+        } else if (movie.constructor === Movie) {
+            this.nonExpandableMovieHandle(movie);
+        }
+    }
 
-            let categoriesObj = {};
-            //pick category to search
-            if ('keywords' in movie) {
-                categoriesObj.keyword = movie.keywords[Math.floor( Math.random() * movie.keywords.length )].id;
-            }
-    
-            if ('genre_ids' in movie){
-                categoriesObj.genre = movie.genre_ids[ Math.floor( Math.random() * movie.genre_ids.length ) ];
-    
-            } 
-            
-            if ( $.isEmptyObject(categoriesObj) ) {
-                console.log('No category to search for foreign film');
-            }
-    
-            this.getForeignFilms(categoriesObj);
-
-        });
+    nonExpandableMovieHandle(movie) {
+        this.updateMovieAppState('resultsFromPick', movie);
         
+    }
+
+    expandableMovieHandle(movie) {
+        this.updateMovieAppState('movieInfo', movie);
     }
 
 
@@ -196,8 +237,51 @@ class MovieApp {
         return searchResults;
     }
 
+    createExpandableMovieArrayFromResponse(responseArray) {
+        const searchResults = [];
+
+        if (responseArray.length > CONSTANTS.movieSearchResultCountLimit) {
+            responseArray = responseArray.slice(0, CONSTANTS.movieSearchResultCountLimit);
+        }
+
+        for (let movie of responseArray) {
+            searchResults.push( new ExpandableMovie( movie, this ) );
+        }
+
+        console.log(searchResults);
+
+        return searchResults;
+    }
+
     appendMovieListToDomElement($domElement, movieList) {
-        $domElement.append( movieList.map( (movie) => movie.el ) );
+        $domElement.append( movieList.map( (movie) => {
+            movie.initEvents();
+            return movie.el;
+        }) );
+    }
+
+    createNewSearchBtn() {
+        const self = this;
+
+        return $('<button>')
+            .addClass('movieApp__newSearchBtn')
+            .text('Start New Search')
+            .on('click', function(e) {
+                e.preventDefault();
+                self.updateMovieAppState('newSearch');
+            });
+    }
+
+    createToResultsFromPickBtn() {
+        const self = this;
+
+        return $('<button>')
+            .addClass('movieApp__ToResultsFromPickBtn')
+            .text('Back to Results')
+            .on('click', function(e) {
+                e.preventDefault();
+                self.updateMovieAppState('resultsFromPick');
+            });
     }
 
 }

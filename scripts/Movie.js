@@ -66,7 +66,9 @@ class Movie {
     initEvents() {
         const self = this;
 
-        this.el.on('click', function(e) {
+        self.el.off(); //clear any past event handlers
+
+        self.el.on('click', function(e) {
             e.preventDefault();
             console.log('clicked');
 
