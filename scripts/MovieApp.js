@@ -1,20 +1,29 @@
 class MovieApp {
     constructor($domContainer) {
+        const self = this;
+
         this.searchResults = [];
         this.foreignFilmResults = [];
         this.movieSelected = {};
 
+        this.foreignLanguageSelection = 'fr';
+
         //initialize searchbar
         this.searchBar = new MovieSearch(this);
 
-        this.el = $domContainer;
-        this.initDisplay();
+        //set app state handles
+        this.updateToState = {
+            'newSearch': self.updateNewSearch.bind(self),
+            'searchResults': self.updateSearchResults.bind(self),
+            'resultsFromPick': self.updateResultsFromPick.bind(self),
+            'movieInfo': self.updateMovieInfo.bind(self), 
+        };
 
         this.getGenreList();
 
-        this.foreignLanguageSelection = 'fr';
-
-        this.displayResults();
+        this.el = $domContainer;
+        this.initDisplay();
+        this.updateMovieAppState('newSearch');
     }
 
 /************* INITIALIZATION FUNCTIONS *********/
@@ -36,6 +45,51 @@ class MovieApp {
         this.updateToState[state]();
     }
 
+    updateNewSearch() {
+        this.displayNewSearch();
+    }
+
+    updateSearchResults() {
+        console.log('update to search results');
+        console.log(this);
+        this.displaySearchResults();
+    }
+
+    updateResultsFromPick() {
+        this.displayResultsFromPick();
+    }
+
+    updateMovieInfo() {
+        this.displayMovieInfo();
+    }
+
+/********* DISPLAY FUNCTIONS  *************/
+    displayNewSearch() {
+        const $results = this.resultsContainer.el;
+        $results.empty();
+
+        $results.append(`<p class="movieApp__searchMessage">Please try a new search.`);
+    }
+
+    displaySearchResults() {
+        const $results = this.resultsContainer.el;
+        $results.empty();
+
+        this.appendMovieListToDomElement($results, this.searchResults);
+    }
+
+    displayResultsFromPick() {
+        const $results = this.resultsContainer.el;
+        $results.empty();
+
+        $results.append( this.movieSelected.el.addClass('movie--selected') );
+        this.appendMovieListToDomElement($results, this.foreignFilmResults);
+    }
+
+    displayMovieInfo() {
+        console.log('displayMovieInfo: need to code');
+    }
+
 
 /************* GET FUNCTIONS *******************/
     getMovieList(query) {
@@ -55,7 +109,7 @@ class MovieApp {
         .then( (res) => {
             this.searchResults = this.createMovieArrayFromResponse(res.results);
 
-            this.displayResults();
+            this.updateMovieAppState('searchResults');
         } )
         .fail( (err) => console.log(err) );
     }
@@ -92,37 +146,10 @@ class MovieApp {
         .then( (res) => {
             this.foreignFilmResults = this.createMovieArrayFromResponse(res.results);
 
-            this.displayResults();            
+            this.updateMovieAppState('resultsFromPick');            
         });
     }
 
-/********* DISPLAY FUNCTIONS  *************/
-    displayResults(results) {
-        const $results = this.resultsContainer.el;
-
-        $results.empty();
-        
-        if ( $.isEmptyObject(results) || results === undefined) {
-            //if a movie has been selected from search results,
-            //display foreign film result
-            if ( !$.isEmptyObject(this.movieSelected) ) {
-                $results.append( this.movieSelected.el.addClass('movie--selected') );
-                this.appendMovieListToDomElement($results, this.foreignFilmResults);
-
-            //if no movie is selected but there are search results
-            } else if ( !$.isEmptyObject(this.searchResults) ) {
-                this.appendMovieListToDomElement($results, this.searchResults);
-
-            //case if there are no search results
-            } else {
-                $results.append(`<p class="movieApp__searchMessage">Please try a new search.`);
-            }
-        //case where an argument has been given.
-        } else {
-            this.appendMovieListToDomElement($results, results);
-        }
-
-    }
 
 /****** EVENT HANDLE FUNCTIONS  ********/
 
