@@ -67,6 +67,7 @@ class Movie {
         const self = this;
 
         this.el.on('click', function(e) {
+            e.preventDefault();
             console.log('clicked');
 
             self.movieApp.movieClickHandle(self);

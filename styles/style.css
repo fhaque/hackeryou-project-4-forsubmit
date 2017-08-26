@@ -1,0 +1,7 @@
+.movie {
+    border: 1px solid blue;
+}
+
+.movie--selected {
+    border: 1px solid green;
+}

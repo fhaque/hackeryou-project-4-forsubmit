@@ -1,16 +1,43 @@
 class MovieApp {
-    constructor(domContainer) {
+    constructor($domContainer) {
         this.searchResults = [];
         this.foreignFilmResults = [];
         this.movieSelected = {};
 
-        this.el = domContainer;
+        //initialize searchbar
+        this.searchBar = new MovieSearch(this);
+
+        this.el = $domContainer;
+        this.initDisplay();
 
         this.getGenreList();
 
         this.foreignLanguageSelection = 'fr';
+
+        this.displayResults();
     }
 
+/************* INITIALIZATION FUNCTIONS *********/
+    initDisplay() {
+        //create header of movie app and add search bar
+        this.headerContainer = {};
+        this.headerContainer.el = $('<header>').addClass('movieApp__headerContainer');
+        this.headerContainer.el.append(this.searchBar.el);
+
+        //create the results container of the app containing all results
+        this.resultsContainer = {};
+        this.resultsContainer.el = $('<main>').addClass('movieApp__resultsContainer');
+        
+        this.el.append(this.headerContainer.el, this.resultsContainer.el);
+    }
+
+/************* STATE UPDATES *******************/
+    updateMovieAppState(state) {
+        this.updateToState[state]();
+    }
+
+
+/************* GET FUNCTIONS *******************/
     getMovieList(query) {
         $.ajax({
             url: CONSTANTS.movieSearchUrl,
@@ -28,7 +55,7 @@ class MovieApp {
         .then( (res) => {
             this.searchResults = this.createMovieArrayFromResponse(res.results);
 
-            this.displayResults(this.searchResults);
+            this.displayResults();
         } )
         .fail( (err) => console.log(err) );
     }
@@ -47,31 +74,57 @@ class MovieApp {
         });
     }
 
-    createMovieArrayFromResponse(responseArray) {
-        const searchResults = [];
+    getForeignFilms(categoriesObj) {
+        console.log(categoriesObj);
 
-        if (responseArray.length > CONSTANTS.movieSearchResultCountLimit) {
-            responseArray = responseArray.slice(0, CONSTANTS.movieSearchResultCountLimit);
-        }
+        $.ajax({
+            url: CONSTANTS.movieDiscoverUrl,
+            method: 'GET',
+            dataType: 'json',
+            data: {
+                'api_key': CONSTANTS.movieKey,
+                'with_genres': categoriesObj.genre,
+                'with_keywords': categoriesObj.keywords,
+                'sort_by': 'popularity.desc',
+                'with_original_language': this.foreignLanguageSelection,
+            }
+        })
+        .then( (res) => {
+            this.foreignFilmResults = this.createMovieArrayFromResponse(res.results);
 
-        for (let movie of responseArray) {
-            searchResults.push( new Movie( movie, this ) );
-        }
-
-        console.log(searchResults);
-
-        return searchResults;
+            this.displayResults();            
+        });
     }
 
-
+/********* DISPLAY FUNCTIONS  *************/
     displayResults(results) {
-        this.el.empty();
-        if ( !$.isEmptyObject(this.movieSelected) ) {
-            this.el.append(this.movieSelected.el);
+        const $results = this.resultsContainer.el;
+
+        $results.empty();
+        
+        if ( $.isEmptyObject(results) || results === undefined) {
+            //if a movie has been selected from search results,
+            //display foreign film result
+            if ( !$.isEmptyObject(this.movieSelected) ) {
+                $results.append( this.movieSelected.el.addClass('movie--selected') );
+                this.appendMovieListToDomElement($results, this.foreignFilmResults);
+
+            //if no movie is selected but there are search results
+            } else if ( !$.isEmptyObject(this.searchResults) ) {
+                this.appendMovieListToDomElement($results, this.searchResults);
+
+            //case if there are no search results
+            } else {
+                $results.append(`<p class="movieApp__searchMessage">Please try a new search.`);
+            }
+        //case where an argument has been given.
+        } else {
+            this.appendMovieListToDomElement($results, results);
         }
 
-        this.el.append( results.map( (movie) => movie.el) );
     }
+
+/****** EVENT HANDLE FUNCTIONS  ********/
 
     movieClickHandle(movie) {
         this.movieSelected = movie;
@@ -98,26 +151,26 @@ class MovieApp {
         
     }
 
-    getForeignFilms(categoriesObj) {
-        console.log(categoriesObj);
 
-        $.ajax({
-            url: CONSTANTS.movieDiscoverUrl,
-            method: 'GET',
-            dataType: 'json',
-            data: {
-                'api_key': CONSTANTS.movieKey,
-                'with_genres': categoriesObj.genre,
-                'with_keywords': categoriesObj.keywords,
-                'sort_by': 'popularity.desc',
-                'with_original_language': this.foreignLanguageSelection,
-            }
-        })
-        .then( (res) => {
-            this.foreignFilmResults = this.createMovieArrayFromResponse(res.results);
+/************* HELPER FUNCTIONS *******************/
+    createMovieArrayFromResponse(responseArray) {
+        const searchResults = [];
 
-            this.displayResults(this.foreignFilmResults);            
-        });
+        if (responseArray.length > CONSTANTS.movieSearchResultCountLimit) {
+            responseArray = responseArray.slice(0, CONSTANTS.movieSearchResultCountLimit);
+        }
+
+        for (let movie of responseArray) {
+            searchResults.push( new Movie( movie, this ) );
+        }
+
+        console.log(searchResults);
+
+        return searchResults;
+    }
+
+    appendMovieListToDomElement($domElement, movieList) {
+        $domElement.append( movieList.map( (movie) => movie.el ) );
     }
 
 }
