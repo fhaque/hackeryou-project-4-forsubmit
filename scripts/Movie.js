@@ -25,6 +25,8 @@ class Movie {
     getKeywords() {
         $.ajax({
             url: CONSTANTS.movieMovieBaseUrl + this.id + '/keywords',
+            method: 'GET',
+            dataType: 'json',
             data: {
                 'api_key': CONSTANTS.movieKey
             }
@@ -62,8 +64,12 @@ class Movie {
     }
 
     initEvents() {
+        const self = this;
+
         this.el.on('click', function(e) {
             console.log('clicked');
+
+            self.movieApp.movieClickHandle(self);
         });
 
     }
@@ -76,6 +82,11 @@ class Movie {
             <p class="movie__title">${this.title || ""}</p>
             <p class="movie__summary">${this.overview || ""}</p>
         </article>`);
+
+        //remove the voter rating if there is none
+        if (this.vote_average === 0) {
+            this.el.remove('.movie__rating');
+        }
     }
 
 

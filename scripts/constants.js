@@ -4,6 +4,7 @@ const CONSTANTS = {
     movieDiscoverUrl: `https://api.themoviedb.org/3/discover/movie`,
     movieMovieBaseUrl: `https://api.themoviedb.org/3/movie/`,
     moviePosterBaseUrl: `https://image.tmdb.org/t/p/`,
+    movieGenreListUrl: `https://api.themoviedb.org/3/genre/movie/list`,
     
 
     moviePosterBGResolution: 'original',
