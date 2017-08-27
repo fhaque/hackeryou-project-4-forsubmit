@@ -166,8 +166,17 @@ class MovieApp {
 
         $results.empty();
         
-        this.el.append( $(`<img src="${movie.background_path}">`).addClass('movieApp__movieBackdrop') );
 
+        //create backdrop and fix its display
+        this.el
+        .append( $(`<div>`)
+            .addClass('movieApp__movieBackdrop')
+            .append(`<img src="${movie.background_path}">`)
+        );
+
+        this.displayFixBackdrop();
+
+        //allow for movie info to work in full page.
         if ( movie.isExpandable() ) {
             movie.expand();
             $results.append(movie.el);
@@ -345,22 +354,26 @@ class MovieApp {
     }
 
     screenRatioDisplayFix() {
-        const width = this.el.width();
-        const height = this.el.height();
+        this.displayFixBackdrop();
+    }
+
+    displayFixBackdrop() {
+        const width = $( window ).width();
+        const height = $( window ).height();
 
         const $movieBackdrop = this.el.find('.movieApp__movieBackdrop');
-
-        //if in portrait
-        if( width < height) {
-            $movieBackdrop
-                .addClass('movieApp__movieBackdrop--portrait')
-                .removeClass('movieApp__movieBackdrop--landscape');
-        //if landscape
-        } else {
-            $movieBackdrop
-                .removeClass('movieApp__movieBackdrop--portrait')
-                .addClass('movieApp__movieBackdrop--landscape');
-        }
+        
+                //if in portrait
+                if( width < height) {
+                    $movieBackdrop
+                        .addClass('movieApp__movieBackdrop--portrait')
+                        .removeClass('movieApp__movieBackdrop--landscape');
+                //if landscape
+                } else {
+                    $movieBackdrop
+                        .removeClass('movieApp__movieBackdrop--portrait')
+                        .addClass('movieApp__movieBackdrop--landscape');
+                }
     }
 
 }

@@ -35,7 +35,7 @@ class ExpandableMovie extends Movie {
                 trailerloop:
                 for(let result of res.results) {
                     if (result.site === 'YouTube') {
-                        this.trailerUrl = `${CONSTANTS.youtubeEmbedBaseUrl}${result.key}?ecver=1`;
+                        this.trailerUrl = `${CONSTANTS.youtubeEmbedBaseUrl}${result.key}?controls=2`;
 
                         // this.addWatchTrailerBtn();
 
@@ -70,7 +70,7 @@ class ExpandableMovie extends Movie {
         }).then( (res) => {
             if ('items' in res) {
                 if(res.items.length !== 0) {
-                    this.trailerUrl = CONSTANTS.youtubeEmbedBaseUrl + res.items[0].id.videoId + '?ecver=1';
+                    this.trailerUrl = CONSTANTS.youtubeEmbedBaseUrl + res.items[0].id.videoId + '?controls=2';
 
                     // this.addWatchTrailerBtn();
                 }
@@ -115,7 +115,26 @@ class ExpandableMovie extends Movie {
     }
 
     showVideo() {
-        console.log('show video function needs to be done');
+        const self = this;
+
+        const $closeBtn = $('<button>')
+                        .addClass('movie__embeddedTrailerCloseBtn')
+                        .text('Close')
+                        .on('click', function(e) {
+                            e.preventDefault();
+
+                            self.movieApp.el.find('.movie__embeddedTrailerContainer').remove();
+                        });
+        const $videoDisplay = $('<div>')
+                .addClass('movie__embeddedTrailerContainer')
+                .append(
+                        `
+                        <iframe class="movie__embeddedTrailerVideo" width="560" height="315" src="${this.trailerUrl}" frameborder="0" allowfullscreen></iframe>
+                        `
+                        )
+                .append($closeBtn);
+        
+        this.movieApp.el.append( $videoDisplay );
     }
 
     isExpandable() {

@@ -1,4 +1,10 @@
+body {
+    /* overflow: hidden; */
+}
 
+.movieApp {
+    /* overflow: hidden; */
+}
 
 .movieApp__headerContainer {
     border: 2px solid yellow;
@@ -8,24 +14,35 @@
     border: 2px solid red;
 }
 
+
 .movieApp__movieBackdrop {
-    display: block;
     position: absolute;
-    top: 0%;
-    /* transform: translate(-50%,0%); */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
     z-index: -99999;
 
-    height: 100%;
+    overflow: hidden; /* to scale img differently */
 }
 
-.movieApp__movieBackdrop--landscape {
-    left: 0%;
+.movieApp__movieBackdrop img {
+    position: absolute;
+    top: 0;
+    /* width: 200%; */
+}
+
+.movieApp__movieBackdrop--landscape img {
+    left: 0;
+    width: 200%;
     
 }
 
-.movieApp__movieBackdrop--portrait {
-    right: -25%;
+.movieApp__movieBackdrop--portrait img {
+    right: -10%;
+    height: 100vh;
+    
 }
 
 .movie {
@@ -34,4 +51,17 @@
 
 .movie--selected {
     border: 1px solid green;
+}
+
+.movie__embeddedTrailerContainer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 999999;
+
+    background-color: black;
+
 }
