@@ -80,7 +80,9 @@ class Movie {
     fillDomTemplate() {
         this.el = $(
         `<article class="movie">
-            <img src="${this.thumbnail_path || ""}" alt="">
+            <div class="movie__thumbnailContainer">
+                <img class="movie__thumbnail" src="${this.thumbnail_path || ""}" alt="">
+            </div>
             <p class="movie__rating">${this.vote_average || ""}</p>
             <p class="movie__title">${this.title || ""}</p>
             <p class="movie__summary">${this.overview || ""}</p>

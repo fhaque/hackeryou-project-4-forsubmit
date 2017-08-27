@@ -1,0 +1,17 @@
+.movie--expanded {
+    box-shadow: $baseBoxShadow;
+    border-radius: $cardBorderRadius;
+    background-color: $cardExpandedColorBg;
+
+    & .movie__title {
+        font-size: 3rem;
+    }
+
+    & .movie__summary {
+        font-size: 1.5rem;
+    }
+
+    & .movie__rating {
+        font-size: 2rem;
+    }
+}

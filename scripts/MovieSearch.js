@@ -17,7 +17,7 @@ class MovieSearch {
             `<form class="searchForm">
                 <label for="searchBar" class="searchForm__searchBarLabel">Movie Title</label>
                 <input type="text" name="searchBar" id="searchBar" class="searchForm__searchBar">
-                <input type="submit" value="Search" class="searchForm__searchButton">
+                <input type="submit" value="Search" class="searchForm__searchBtn">
             <form>`);
     }
 

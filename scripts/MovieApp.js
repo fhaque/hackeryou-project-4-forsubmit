@@ -120,7 +120,8 @@ class MovieApp {
 
         this.el.find('.movieApp__movieBackdrop').remove();
 
-        $header.empty();
+        this.resetHeaderContainer();
+
         this.searchBar.initEvents(); //re-bind event handlers
         $header.append( this.searchBar.el );
 
@@ -141,11 +142,23 @@ class MovieApp {
 
         this.el.find('.movieApp__movieBackdrop').remove();
 
-        $header.empty();
-        $header.append( this.movieSelected.el.addClass('movie--selected') );
+        this.resetHeaderContainer();
+        $header.addClass('movieApp__headerContainer--resultsFromPick');
+
+        // this.movieSelected.el.parentToAnimate($header, 'slow');
+        if (this.movieSelected.el.hasClass('movie--selected') ) {
+            $header.append( this.movieSelected.el );
+        } else {
+            moveAnimateFixed(this.movieSelected.el, $header, 1000);
+            setTimeout( () => this.movieSelected.el.addClass('movie--selected'), 0 );
+        }
+
+        // $header.append( this.movieSelected.el );
         $header.append( this.createLanguageSelectMenu() );
         $header.append( this.createNewSearchBtn() );
 
+        
+        
 
         $results.empty();
         if ( this.foreignFilmResults.length === 0 ) {
@@ -160,7 +173,8 @@ class MovieApp {
         const $header = this.headerContainer.el;
         const $results = this.resultsContainer.el;
 
-        $header.empty();
+        this.resetHeaderContainer();
+
         $header.append( this.createToResultsFromPickBtn(movie) );
         $header.append( this.createNewSearchBtn() );
 
@@ -390,6 +404,14 @@ class MovieApp {
                         .removeClass('movieApp__movieBackdrop--portrait')
                         .addClass('movieApp__movieBackdrop--landscape');
                 }
+    }
+
+    resetHeaderContainer() {
+        const $header = this.headerContainer.el;
+
+        $header.removeAttr('class');
+        $header.addClass('movieApp__headerContainer');
+        $header.empty();
     }
 
 }

@@ -1,0 +1,89 @@
+.movieApp {
+    /* overflow: hidden; */
+}
+
+.movieApp__headerContainer {
+    position: fixed;
+
+    width: 100%;
+
+    border: 2px solid yellow;
+}
+
+.movieApp__headerContainer--resultsFromPick {
+    display: flex;
+    align-items: center;
+}
+
+.movieApp__resultsContainer {
+    border: 2px solid red;
+}
+
+.movieApp__newSearchBtn {
+    display: block;
+    // position: absolute;
+    // right: 0;
+
+    height: 4rem;
+
+    border: 0;
+    border-radius: 2px;
+    
+    font-size: 1.5rem;
+}
+
+
+.movieApp__languageMenu {
+    display: block;
+    -webkit-appearance: none;
+
+    // position: absolute;
+    // left: 50%;
+    // transform: translate(-50%,0%);
+
+    width: 60%;
+    height: 4rem;
+    padding: 8px;
+    margin: 0 auto;
+    
+    border: none;
+    border-radius: 2px;
+    box-shadow: $baseBoxShadow;
+    
+    font-size: 1.5rem;
+
+    &:focus {
+        outline: none;
+        box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
+    }
+}
+
+.movieApp__movieBackdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: -99999;
+
+    overflow: hidden; /* to scale img differently */
+}
+
+.movieApp__movieBackdrop img {
+    position: absolute;
+    top: 0;
+    /* width: 200%; */
+}
+
+.movieApp__movieBackdrop--landscape img {
+    left: -25%;
+    max-width: 200%;
+    
+}
+
+.movieApp__movieBackdrop--portrait img {
+    right: -20%;
+    height: 100vh;
+    
+}
