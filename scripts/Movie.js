@@ -92,5 +92,9 @@ class Movie {
         }
     }
 
+    isExpandable() {
+        return false;
+    }
+
 
 }

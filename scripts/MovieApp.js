@@ -6,7 +6,7 @@ class MovieApp {
         this.foreignFilmResults = [];
         this.movieSelected = {};
 
-        this.foreignLanguageSelection = 'fr';
+        this.foreignLanguageSelection = 'en';
 
         //initialize searchbar
         this.searchBar = new MovieSearch(this);
@@ -28,6 +28,8 @@ class MovieApp {
 
 /************* INITIALIZATION FUNCTIONS *********/
     initDisplay() {
+        const self = this;
+
         //create header of movie app
         this.headerContainer = {};
         this.headerContainer.el = $('<header>').addClass('movieApp__headerContainer');
@@ -37,11 +39,18 @@ class MovieApp {
         this.resultsContainer.el = $('<main>').addClass('movieApp__resultsContainer');
         
         this.el.append(this.headerContainer.el, this.resultsContainer.el);
+
+        this.screenRatioDisplayFix();
+
+        //window resize detection
+        $(window).resize(function(e) {
+            self.screenRatioDisplayFix();
+        });
     }
 
 /************* STATE UPDATES *******************/
-    updateMovieAppState(state, data) {
-        this.updateToState[state](data);
+    updateMovieAppState(state, ...data) {
+        this.updateToState[state](...data);
     }
 
     updateNewSearch() {
@@ -62,7 +71,8 @@ class MovieApp {
     //get the keywords of the selected movie and pick
     //category and keyword from movie. Search for it,
     //then display results.
-    updateResultsFromPick(movie) {
+    updateResultsFromPick(movie, language) {
+
         if ( movie !== undefined ) {
             this.movieSelected = movie;
             this.movieSelected.getKeywords().then( () => {
@@ -81,6 +91,8 @@ class MovieApp {
                 if ( $.isEmptyObject(categoriesObj) ) {
                     console.log('No category to search for foreign film');
                 }
+
+                this.movieSelected.categoriesObj = categoriesObj; //save for later 'gets'
                 
                 console.log("ResultFromPick this:", this);
                 this.getForeignFilms(categoriesObj)
@@ -88,6 +100,10 @@ class MovieApp {
 
             });
 
+        } else if (language !== undefined) {
+            this.foreignLanguageSelection = language;
+            this.getForeignFilms(this.movieSelected.categoriesObj)
+            .then( () => this.displayResultsFromPick() );
         } else {
             this.displayResultsFromPick();
         }
@@ -101,6 +117,8 @@ class MovieApp {
     displayNewSearch() {
         const $header = this.headerContainer.el;
         const $results = this.resultsContainer.el;
+
+        this.el.find('.movieApp__movieBackdrop').remove();
 
         $header.empty();
         this.searchBar.initEvents(); //re-bind event handlers
@@ -121,13 +139,21 @@ class MovieApp {
         const $header = this.headerContainer.el;
         const $results = this.resultsContainer.el;
 
+        this.el.find('.movieApp__movieBackdrop').remove();
+
         $header.empty();
         $header.append( this.movieSelected.el.addClass('movie--selected') );
+        $header.append( this.createLanguageSelectMenu() );
         $header.append( this.createNewSearchBtn() );
 
 
         $results.empty();
-        this.appendMovieListToDomElement($results, this.foreignFilmResults);
+        if ( this.foreignFilmResults.length === 0 ) {
+            $results.append(`<p class="movieApp__searchMessage">No related ${LANGUAGES[this.foreignLanguageSelection]} movies found. Please select a different language.`);
+        } else {
+            this.appendMovieListToDomElement($results, this.foreignFilmResults);
+        }
+        
     }
 
     displayMovieInfo(movie) {
@@ -135,10 +161,17 @@ class MovieApp {
         const $results = this.resultsContainer.el;
 
         $header.empty();
-        $header.append( this.createToResultsFromPickBtn() );
+        $header.append( this.createToResultsFromPickBtn(movie) );
         $header.append( this.createNewSearchBtn() );
 
         $results.empty();
+        
+        this.el.append( $(`<img src="${movie.background_path}">`).addClass('movieApp__movieBackdrop') );
+
+        if ( movie.isExpandable() ) {
+            movie.expand();
+            $results.append(movie.el);
+        }
 
     }
 
@@ -272,7 +305,7 @@ class MovieApp {
             });
     }
 
-    createToResultsFromPickBtn() {
+    createToResultsFromPickBtn(movie) {
         const self = this;
 
         return $('<button>')
@@ -280,8 +313,54 @@ class MovieApp {
             .text('Back to Results')
             .on('click', function(e) {
                 e.preventDefault();
+                
+                movie.unexpand();
+
                 self.updateMovieAppState('resultsFromPick');
             });
+    }
+
+    createLanguageSelectMenu() {
+        const self = this;
+
+        const $optionElArray = Object.keys(LANGUAGES)
+            .map( (language) => {
+                const $option = $(`<option value="${language}">${LANGUAGES[language]}</option>`);
+
+                if (language === this.foreignLanguageSelection) {
+                    $option.attr('selected','selected');
+                }
+
+                return $option;
+            });
+        
+
+        return $('<select name="languageMenu">')
+                .addClass('movieApp__languageMenu')
+                .append(...$optionElArray)
+                .on('change', function(e) {
+                    console.log( $(this).val() );
+                    self.updateMovieAppState('resultsFromPick',undefined,$(this).val());
+                });
+    }
+
+    screenRatioDisplayFix() {
+        const width = this.el.width();
+        const height = this.el.height();
+
+        const $movieBackdrop = this.el.find('.movieApp__movieBackdrop');
+
+        //if in portrait
+        if( width < height) {
+            $movieBackdrop
+                .addClass('movieApp__movieBackdrop--portrait')
+                .removeClass('movieApp__movieBackdrop--landscape');
+        //if landscape
+        } else {
+            $movieBackdrop
+                .removeClass('movieApp__movieBackdrop--portrait')
+                .addClass('movieApp__movieBackdrop--landscape');
+        }
     }
 
 }

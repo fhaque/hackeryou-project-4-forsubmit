@@ -1,3 +1,5 @@
+
+
 .movieApp__headerContainer {
     border: 2px solid yellow;
 }
@@ -5,6 +7,27 @@
 .movieApp__resultsContainer {
     border: 2px solid red;
 }
+
+.movieApp__movieBackdrop {
+    display: block;
+    position: absolute;
+    top: 0%;
+    /* transform: translate(-50%,0%); */
+
+    z-index: -99999;
+
+    height: 100%;
+}
+
+.movieApp__movieBackdrop--landscape {
+    left: 0%;
+    
+}
+
+.movieApp__movieBackdrop--portrait {
+    right: -25%;
+}
+
 .movie {
     border: 1px solid blue;
 }
