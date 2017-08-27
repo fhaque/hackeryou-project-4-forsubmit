@@ -1,5 +1,6 @@
 .movieApp {
     /* overflow: hidden; */
+
 }
 
 .movieApp__headerContainer {
@@ -8,6 +9,8 @@
     width: 100%;
 
     border: 2px solid yellow;
+
+    z-index: $zFront;
 }
 
 .movieApp__headerContainer--resultsFromPick {
@@ -17,6 +20,11 @@
 
 .movieApp__resultsContainer {
     border: 2px solid red;
+
+    padding-top: 150px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 .movieApp__newSearchBtn {

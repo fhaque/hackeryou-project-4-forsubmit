@@ -1,8 +1,27 @@
 .movie {
-    border: 1px solid blue;
-    background-color: $cardColorBg;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 
-    transition: all 2s ease;
+    width: 30%;
+    height: 40rem;
+    border-radius: 2px;
+    margin-bottom: 20px;
+
+    background-color: $cardExpandedColorBg;
+    box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.75);
+
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    
+    &:hover {
+        background-color: $cardColorBg;
+        transform: scale(1.02,1.02);
+
+        // z-index: $zMinus;
+    }
     
 }
 
@@ -13,10 +32,18 @@
 
     width: 15%;
     height: 10rem;
+    margin: 0;
     border: 1px solid green;
     border-radius: 2px;
 
     background-color: transparent;
+    box-shadow: none;
+
+    &:hover {
+        background-color: transparent;
+        transform: none;
+
+    }
     
     
     & .movie__title {
@@ -73,6 +100,8 @@
 }
 
 .movie__title {
+
+    text-align: center;
     font-family: $titleFont;
     font-size: 2.5rem;
 
@@ -81,6 +110,15 @@
 .movie__summary {
     font-family: $textFont;
     font-size: 1.2rem;
+
+    width: 80%;
+}
+.movie__summary--noOverflow {
+    display:block; 
+    
+    // white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .movie__rating {
