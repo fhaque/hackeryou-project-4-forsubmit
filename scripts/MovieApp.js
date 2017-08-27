@@ -168,10 +168,26 @@ class MovieApp {
         
 
         //create backdrop and fix its display
+        const $backdropImage = $(`<img src="${movie.background_path}">`)
+            //To use Vibrant JS library
+            //fix idea from: https://stackoverflow.com/questions/22097747/how-to-fix-getimagedata-error-the-canvas-has-been-tainted-by-cross-origin-data
+            .attr('crossOrigin', '')
+            .on('load', function(e) {
+                    const vibrant = new Vibrant(this);
+                    const swatches = vibrant.swatches();
+                    for (var swatch in swatches) {
+                        if (swatches.hasOwnProperty(swatch) && swatches[swatch]){
+                            console.log('Swatch Color:',swatch, swatches[swatch].getHex());
+
+                            console.log('Title and Body text color', swatches[swatch].getTitleTextColor(), swatches[swatch].getBodyTextColor() );
+
+                        }
+                    }      
+            });
         this.el
         .append( $(`<div>`)
-            .addClass('movieApp__movieBackdrop')
-            .append(`<img src="${movie.background_path}">`)
+                .addClass('movieApp__movieBackdrop')
+                .append($backdropImage)
         );
 
         this.displayFixBackdrop();
