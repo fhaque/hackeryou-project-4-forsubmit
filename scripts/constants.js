@@ -12,4 +12,8 @@ const CONSTANTS = {
 
     movieSearchResultCountLimit: 6,
 
+    youtubeKey: "AIzaSyALAOVJ8EJrA2C9SxcX9rB8-xPoAPXCuzk",
+    youtubeApiUrl: "https://www.googleapis.com/youtube/v3/search",
+    youtubeEmbedBaseUrl: "https://www.youtube.com/embed/",
+
 };
