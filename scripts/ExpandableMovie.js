@@ -94,7 +94,6 @@ class ExpandableMovie extends Movie {
     }
 
     expandDomElement() {
-        console.log('ExpandedDomElement');
 
         this.el.addClass('movie--expanded');
 

@@ -94,7 +94,7 @@ class MovieApp {
 
                 this.movieSelected.categoriesObj = categoriesObj; //save for later 'gets'
                 
-                console.log("ResultFromPick this:", this);
+            
                 this.getForeignFilms(categoriesObj)
                 .then( () => this.displayResultsFromPick() );
 
@@ -201,16 +201,7 @@ class MovieApp {
                     const vibrant = new Vibrant(this);
                     const swatches = vibrant.swatches();
                     self.changeTheme(movie, swatches);
-                    for (var swatch in swatches) {
-                        if (swatches.hasOwnProperty(swatch) && swatches[swatch]){
-                            
-
-                            console.log('Swatch Color:',swatch, swatches[swatch].getHex());
-
-                            console.log('Title and Body text color', swatches[swatch].getTitleTextColor(), swatches[swatch].getBodyTextColor() );
-
-                        }
-                    }
+                   
                     window.scrollTo(0, 0); //scroll to top of page          
             });
         
@@ -251,7 +242,6 @@ class MovieApp {
             }
         })
         .then( (res) => {
-            console.log(res);
             this.searchResults = this.createMovieArrayFromResponse(res.results);
         } )
         .fail( (err) => console.log(err) );
@@ -272,7 +262,7 @@ class MovieApp {
     }
 
     getForeignFilms(categoriesObj) {
-        console.log(categoriesObj);
+    
 
         return $.ajax({
             url: CONSTANTS.movieDiscoverUrl,
@@ -324,7 +314,7 @@ class MovieApp {
             searchResults.push( new Movie( movie, this ) );
         }
 
-        console.log(searchResults);
+
 
         return searchResults;
     }
@@ -340,7 +330,6 @@ class MovieApp {
             searchResults.push( new ExpandableMovie( movie, this ) );
         }
 
-        console.log(searchResults);
 
         return searchResults;
     }
@@ -402,7 +391,7 @@ class MovieApp {
                 .addClass('movieApp__languageMenu')
                 .append(...$optionElArray)
                 .on('change', function(e) {
-                    console.log( $(this).val() );
+                   
                     self.updateMovieAppState('resultsFromPick',undefined,$(this).val());
                 });
 

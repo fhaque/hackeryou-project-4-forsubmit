@@ -30,7 +30,7 @@ class MovieSearch {
             e.preventDefault();
 
             this.query = self.el.children('input[class="searchForm__searchBar"]').val();
-            console.log(this.query);
+    
             self.movieApp.updateMovieAppState('searchResults', this.query);
         });
     }
