@@ -777,4 +777,36 @@ button {
   .movie--expanded .movie__rating {
     font-size: 2rem; }
 
+.pulse {
+  -webkit-animation: pulse 4s infinite;
+  animation: pulse 4s infinite; }
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-filter: brightness(0.7);
+    filter: brightness(0.7); }
+  5% {
+    -webkit-filter: brightness(0.4);
+    filter: brightness(0.4); }
+  10% {
+    -webkit-filter: brightness(0.7);
+    filter: brightness(0.7); }
+  100% {
+    -webkit-filter: brightness(0.3);
+    filter: brightness(0.3); } }
+
+@keyframes pulse {
+  0% {
+    -webkit-filter: brightness(0.7);
+    filter: brightness(0.7); }
+  5% {
+    -webkit-filter: brightness(0.4);
+    filter: brightness(0.4); }
+  10% {
+    -webkit-filter: brightness(0.7);
+    filter: brightness(0.7); }
+  100% {
+    -webkit-filter: brightness(0.3);
+    filter: brightness(0.3); } }
+
 /*# sourceMappingURL=style.css.map */

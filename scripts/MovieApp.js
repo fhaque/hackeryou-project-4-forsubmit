@@ -213,15 +213,16 @@ class MovieApp {
                     }
                     window.scrollTo(0, 0); //scroll to top of page          
             });
+        
         this.el
-        .prepend( $('<p>')
-                    .text(movie.title)
-                    .addClass('movieApp__movieTitle') 
-        )
-        .prepend( $(`<div>`)
-                .addClass('movieApp__movieBackdrop')
-                .append($backdropImage)
-        );
+            .prepend( $('<p>')
+                        .text(movie.title)
+                        .addClass('movieApp__movieTitle') 
+            )
+            .prepend( $(`<div>`)
+                    .addClass('movieApp__movieBackdrop')
+                    .append($backdropImage)
+            );
 
         this.displayFixBackdrop();
 
@@ -410,16 +411,29 @@ class MovieApp {
     }
 
     changeTheme(movie, swatch) {
-        console.log(swatch);
+        this.addBackdropEffects(movie, swatch);
 
+        this.changeMovieTheme(movie, swatch);
+        
+
+    }
+
+    addBackdropEffects(movie, swatch) {
+        //if a horror movie
+        if(movie.genre_ids.includes(27)) {
+            this.el.find('.movieApp__movieBackdrop')
+                    .addClass('pulse');
+        }
+
+    }
+
+    changeMovieTheme(movie, swatch) {
         const bgColor = swatch['DarkVibrant'].getRgb();
         const titleColor = swatch['DarkVibrant'].getTitleTextColor();
         const textColor = swatch['DarkVibrant'].getBodyTextColor();
         const btnBgColor = swatch['Vibrant'].getRgb();
         const btnTextColor = swatch['Vibrant'].getTitleTextColor();
         const btnShadowColor = swatch['DarkMuted'].getRgb();
-
-        console.log(titleColor);
 
         movie.el.css('background-color', `rgba(${bgColor},0.75)` );
         movie.el.find('.movie__summary').css('color', `${textColor}`);
@@ -435,11 +449,6 @@ class MovieApp {
                 .mouseleave(function(e){
                     $(this).css('box-shadow', 'none').css('box-shadow', `0px 0px 35px 0px rgba(${btnShadowColor}, 1)`);
                 });
-
-
-        console.log(movie.el.find('.movie__summary'));
-
-        console.log('Theme change');
     }
 
     screenRatioDisplayFix() {

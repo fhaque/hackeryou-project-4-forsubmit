@@ -10,7 +10,7 @@ const CONSTANTS = {
     moviePosterBGResolution: 'original',
     moviePosterThumbResolution: 'w154',
 
-    movieSearchResultCountLimit: 6,
+    movieSearchResultCountLimit: 9,
 
     youtubeKey: "AIzaSyALAOVJ8EJrA2C9SxcX9rB8-xPoAPXCuzk",
     youtubeApiUrl: "https://www.googleapis.com/youtube/v3/search",
