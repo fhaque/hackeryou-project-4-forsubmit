@@ -25,9 +25,19 @@ body {
     margin: 0;
     /* overflow: hidden; */
     background-color: $primaryBgColor;
-    background-image: url('../assets/jake-hills-194864.jpg');
-    background-size: cover;
-    background-position: center;
+
+    .body__background {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        z-index: $zBack;
+
+        height: 150%;
+        min-width: 100%;
+        min-height: 100%;
+    }
 }
 
 p {
