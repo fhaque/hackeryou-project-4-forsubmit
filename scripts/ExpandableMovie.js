@@ -44,10 +44,10 @@ class ExpandableMovie extends Movie {
                 }
 
                 if ( !('trailerUrl' in this) ) {
-                    this.getYoutubeTrailer();
+                    return this.getYoutubeTrailer();
                 }
             } else {
-                this.getYoutubeTrailer();
+                return this.getYoutubeTrailer();
             }
         });
     }

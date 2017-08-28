@@ -177,6 +177,8 @@ class MovieApp {
     }
 
     displayMovieInfo(movie) {
+        const self = this;
+
         const $header = this.headerContainer.el;
         const $results = this.resultsContainer.el;
 
@@ -198,8 +200,11 @@ class MovieApp {
             .on('load', function(e) {
                     const vibrant = new Vibrant(this);
                     const swatches = vibrant.swatches();
+                    self.changeTheme(movie, swatches);
                     for (var swatch in swatches) {
                         if (swatches.hasOwnProperty(swatch) && swatches[swatch]){
+                            
+
                             console.log('Swatch Color:',swatch, swatches[swatch].getHex());
 
                             console.log('Title and Body text color', swatches[swatch].getTitleTextColor(), swatches[swatch].getBodyTextColor() );
@@ -402,6 +407,39 @@ class MovieApp {
 
         return $('<div class="movieApp__languageMenuContainer">')
                 .append($label, $menu);
+    }
+
+    changeTheme(movie, swatch) {
+        console.log(swatch);
+
+        const bgColor = swatch['DarkVibrant'].getRgb();
+        const titleColor = swatch['DarkVibrant'].getTitleTextColor();
+        const textColor = swatch['DarkVibrant'].getBodyTextColor();
+        const btnBgColor = swatch['Vibrant'].getRgb();
+        const btnTextColor = swatch['Vibrant'].getTitleTextColor();
+        const btnShadowColor = swatch['DarkMuted'].getRgb();
+
+        console.log(titleColor);
+
+        movie.el.css('background-color', `rgba(${bgColor},0.75)` );
+        movie.el.find('.movie__summary').css('color', `${textColor}`);
+        movie.el.find('.movie__title').css('color', `${titleColor}`);
+
+        movie.el.find('button')
+                .css('background-color', `rgb(${btnBgColor})`)
+                .css('color', `${btnTextColor}`)
+                .css('box-shadow', `0px 0px 35px 0px rgba(${btnShadowColor}, 1)`)
+                .hover(function(e){
+                    $(this).css('box-shadow', 'none');
+                })
+                .mouseleave(function(e){
+                    $(this).css('box-shadow', 'none').css('box-shadow', `0px 0px 35px 0px rgba(${btnShadowColor}, 1)`);
+                });
+
+
+        console.log(movie.el.find('.movie__summary'));
+
+        console.log('Theme change');
     }
 
     screenRatioDisplayFix() {

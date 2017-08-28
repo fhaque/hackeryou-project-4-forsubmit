@@ -500,7 +500,9 @@ button {
     background-color: white;
     -webkit-transform: scale(1.02, 1.02);
     -ms-transform: scale(1.02, 1.02);
-    transform: scale(1.02, 1.02); }
+    transform: scale(1.02, 1.02);
+    -webkit-box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.9);
+    box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.9); }
 
 .movie--selected {
   display: -webkit-box;
@@ -678,6 +680,9 @@ button {
   font-size: 1.5rem;
   background-color: darkturquoise;
   color: white; }
+  .movie__watchTrailerBtn:hover {
+    -webkit-box-shadow: none;
+    box-shadow: none; }
   @media (max-width: 480px) {
     .movie__watchTrailerBtn {
       margin-top: 30px; } }

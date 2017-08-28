@@ -36,7 +36,7 @@
     &:hover {
         background-color: $cardColorBg;
         transform: scale(1.02,1.02);
-
+        box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.9);
         // z-index: $zMinus;
     }
     
@@ -243,6 +243,10 @@
 
     background-color: $goColor;
     color: $goTextColor;
+
+    &:hover {
+        box-shadow: none;
+    }
 
     @include respond-to("small") {
         margin-top: 30px;
