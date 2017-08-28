@@ -13,13 +13,14 @@
     max-width: $maxContainerWidth;
     margin: 0 auto;
     padding: 10px;
-    border: 2px solid yellow;
+    // border: 2px solid yellow;
 
     z-index: $zFront;
 }
 
 .movieApp__headerContainer--resultsFromPick {
     display: flex;
+    justify-content: space-between;
     align-items: center;
 
     @include respond-to("small") {
@@ -39,12 +40,7 @@
 
 }
 
-.movieApp__resultsContainer--searchResults
- {
-    @include respond-to("small") {
-        padding-top: 225px;
-    }
-}
+
 
 .movieApp__resultsContainer {
     display: flex;
@@ -54,7 +50,7 @@
     max-width: $maxContainerWidth;
     margin: 0 auto;
     padding-top: 150px;
-    border: 2px solid red;
+    // border: 2px solid red;
 
 
     @include respond-to("small") {
@@ -65,7 +61,8 @@
         padding-top: 0;
 
         position: absolute;
-        bottom: -100%;
+        // bottom: -100%; //For full header.
+        bottom: -72%;
         left: 50%;
         transform: translate(-50%,-50%);
         width: 100%;
@@ -78,8 +75,24 @@
             
         }
     }
+
+    &.movieApp__resultsContainer--resultsFromPick
+    {
+       @include respond-to("small") {
+           padding-top: 225px;
+       }
+   }
 }
 
+.movieApp__searchMessage {
+    font-size: 2rem;
+    font-family: $textFont;
+    text-shadow: 0px 0px 10px rgba(255, 255, 255, 1);
+    background-color: $cardExpandedColorBg;
+    padding: 10px;
+    border-radius: 2px;
+    box-shadow: $baseBoxShadow;    
+}
 
 .movieApp__movieTitle {
     display: block;
@@ -139,6 +152,43 @@
     color: $stopTextColor;
 }
 
+.movieApp__languageMenuContainer {
+    position: relative;
+    width: 60%;
+
+    @include respond-to("medium") {
+        width: 40%;
+    }
+
+    @include respond-to("small") {
+        width: 100%;
+        margin: 10px 0px;
+    }
+}
+
+.movieApp__languageMenuLabel {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 50%;
+    padding: 0;
+    margin: 0;
+
+    font-size: 1.5rem;
+    
+    @include respond-to("large") {
+        font-size: 1.2rem;
+    }
+
+    @include respond-to("medium") {
+        left: 75%;
+    }
+    
+}
+
 .movieApp__languageMenu {
     display: block;
     -webkit-appearance: none;
@@ -147,7 +197,8 @@
     // left: 50%;
     // transform: translate(-50%,0%);
 
-    width: 60%;
+    width: 100%;
+    
     height: 4rem;
     padding: 8px;
     margin: 0 auto;
@@ -158,14 +209,7 @@
     
     font-size: 1.5rem;
 
-    @include respond-to("medium") {
-        width: 40%;
-    }
-
-    @include respond-to("small") {
-        width: 100%;
-        margin: 10px 0px;
-    }
+    
 
     &:focus {
         outline: none;

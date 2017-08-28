@@ -25,7 +25,9 @@ body {
     margin: 0;
     /* overflow: hidden; */
     background-color: $primaryBgColor;
-    
+    background-image: url('../assets/jake-hills-194864.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 p {
@@ -36,4 +38,15 @@ p {
 ul {
     padding: 0;
     margin: 0;
+}
+
+button {
+    font-family: $textFont;
+    
+    box-shadow: $secondaryBoxShadow;
+
+    &:hover {
+        box-shadow: none;
+        transform: scale(0.95,0.95);
+    }
 }

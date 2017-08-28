@@ -148,7 +148,10 @@ body {
   padding: 0;
   margin: 0;
   /* overflow: hidden; */
-  background-color: #A9A9A9; }
+  background-color: #A9A9A9;
+  background-image: url("../assets/jake-hills-194864.jpg");
+  background-size: cover;
+  background-position: center; }
 
 p {
   padding: 0;
@@ -157,6 +160,17 @@ p {
 ul {
   padding: 0;
   margin: 0; }
+
+button {
+  font-family: "Lato", sans-serif;
+  -webkit-box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.3); }
+  button:hover {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-transform: scale(0.95, 0.95);
+    -ms-transform: scale(0.95, 0.95);
+    transform: scale(0.95, 0.95); }
 
 .movieApp {
   /* overflow: hidden; */ }
@@ -169,7 +183,6 @@ ul {
   max-width: 1080px;
   margin: 0 auto;
   padding: 10px;
-  border: 2px solid yellow;
   z-index: 9999999; }
 
 .movieApp__headerContainer--resultsFromPick {
@@ -177,6 +190,10 @@ ul {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   -webkit-box-align: center;
   -webkit-align-items: center;
   -ms-flex-align: center;
@@ -213,10 +230,6 @@ ul {
   -ms-flex-align: center;
   align-items: center; }
 
-@media (max-width: 480px) {
-  .movieApp__resultsContainer--searchResults {
-    padding-top: 225px; } }
-
 .movieApp__resultsContainer {
   display: -webkit-box;
   display: -webkit-flex;
@@ -231,15 +244,14 @@ ul {
   justify-content: space-evenly;
   max-width: 1080px;
   margin: 0 auto;
-  padding-top: 150px;
-  border: 2px solid red; }
+  padding-top: 150px; }
   @media (max-width: 480px) {
     .movieApp__resultsContainer {
       padding-top: 150px; } }
   .movieApp__resultsContainer.movieApp__resultsContainer--movieInfo {
     padding-top: 0;
     position: absolute;
-    bottom: -100%;
+    bottom: -72%;
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
@@ -253,6 +265,19 @@ ul {
         -webkit-transform: none;
         -ms-transform: none;
         transform: none; } }
+  @media (max-width: 480px) {
+    .movieApp__resultsContainer.movieApp__resultsContainer--resultsFromPick {
+      padding-top: 225px; } }
+
+.movieApp__searchMessage {
+  font-size: 2rem;
+  font-family: "Lato", sans-serif;
+  text-shadow: 0px 0px 10px white;
+  background-color: rgba(255, 255, 255, 0.75);
+  padding: 10px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.75); }
 
 .movieApp__movieTitle {
   display: block;
@@ -300,10 +325,40 @@ ul {
   background-color: #d10069;
   color: white; }
 
+.movieApp__languageMenuContainer {
+  position: relative;
+  width: 60%; }
+  @media (max-width: 600px) {
+    .movieApp__languageMenuContainer {
+      width: 40%; } }
+  @media (max-width: 480px) {
+    .movieApp__languageMenuContainer {
+      width: 100%;
+      margin: 10px 0px; } }
+
+.movieApp__languageMenuLabel {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 50%;
+  padding: 0;
+  margin: 0;
+  font-size: 1.5rem; }
+  @media (max-width: 800px) {
+    .movieApp__languageMenuLabel {
+      font-size: 1.2rem; } }
+  @media (max-width: 600px) {
+    .movieApp__languageMenuLabel {
+      left: 75%; } }
+
 .movieApp__languageMenu {
   display: block;
   -webkit-appearance: none;
-  width: 60%;
+  width: 100%;
   height: 4rem;
   padding: 8px;
   margin: 0 auto;
@@ -312,13 +367,6 @@ ul {
   -webkit-box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.75);
   font-size: 1.5rem; }
-  @media (max-width: 600px) {
-    .movieApp__languageMenu {
-      width: 40%; } }
-  @media (max-width: 480px) {
-    .movieApp__languageMenu {
-      width: 100%;
-      margin: 10px 0px; } }
   .movieApp__languageMenu:focus {
     outline: none;
     -webkit-box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
@@ -464,7 +512,6 @@ ul {
   width: 15%;
   height: 10rem;
   margin: 0;
-  border: 1px solid green;
   border-radius: 2px;
   background-color: transparent;
   -webkit-box-shadow: none;
@@ -642,6 +689,9 @@ ul {
   box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.75);
   border-radius: 0;
   background-color: rgba(255, 255, 255, 0.75); }
+  @media (max-width: 800px) {
+    .movie--expanded {
+      background-color: white; } }
   @media (max-width: 480px) {
     .movie--expanded {
       -webkit-box-orient: vertical;
@@ -658,6 +708,9 @@ ul {
     -webkit-transform: none;
     -ms-transform: none;
     transform: none; }
+    @media (max-width: 800px) {
+      .movie--expanded:hover {
+        background-color: white; } }
   .movie--expanded .movie__header {
     -webkit-box-pack: start;
     -webkit-justify-content: flex-start;
@@ -712,15 +765,5 @@ ul {
         text-overflow: unset; } }
   .movie--expanded .movie__rating {
     font-size: 2rem; }
-
-button {
-  -webkit-box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.3); }
-  button:hover {
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    -webkit-transform: scale(0.95, 0.95);
-    -ms-transform: scale(0.95, 0.95);
-    transform: scale(0.95, 0.95); }
 
 /*# sourceMappingURL=style.css.map */

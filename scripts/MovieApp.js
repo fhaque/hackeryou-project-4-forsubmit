@@ -128,13 +128,14 @@ class MovieApp {
 
         this.resetResultsContainer();
 
-        $results.append(`<p class="movieApp__searchMessage">Please try a new search.`);
+        $results.append(`<p class="movieApp__searchMessage">Welcome to Foreign Film Suggester! Search for a film you like. Then pick a foreign language. Get suggestions :). Try searching above!.`);
     }
 
     displaySearchResults() {
         const $results = this.resultsContainer.el;
 
         this.resetResultsContainer();
+        
 
         this.appendMovieListToDomElement($results, this.searchResults);
     }
@@ -165,6 +166,7 @@ class MovieApp {
         
 
         this.resetResultsContainer();
+        $results.addClass('movieApp__resultsContainer--resultsFromPick');
         
         if ( this.foreignFilmResults.length === 0 ) {
             $results.append(`<p class="movieApp__searchMessage">No related ${LANGUAGES[this.foreignLanguageSelection]} movies found. Please select a different language.`);
@@ -374,6 +376,10 @@ class MovieApp {
     createLanguageSelectMenu() {
         const self = this;
 
+        const $label = $('<label for="languageMenu">')
+                        .addClass('movieApp__languageMenuLabel')
+                        .text('Please select a film language.');
+
         const $optionElArray = Object.keys(LANGUAGES)
             .map( (language) => {
                 const $option = $(`<option value="${language}">${LANGUAGES[language]}</option>`);
@@ -386,13 +392,16 @@ class MovieApp {
             });
         
 
-        return $('<select name="languageMenu">')
+        const $menu = $('<select name="languageMenu" id="languageMenu">')
                 .addClass('movieApp__languageMenu')
                 .append(...$optionElArray)
                 .on('change', function(e) {
                     console.log( $(this).val() );
                     self.updateMovieAppState('resultsFromPick',undefined,$(this).val());
                 });
+
+        return $('<div class="movieApp__languageMenuContainer">')
+                .append($label, $menu);
     }
 
     screenRatioDisplayFix() {
