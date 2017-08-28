@@ -5,9 +5,10 @@
 
 .movieApp__headerContainer {
     position: fixed;
+    top: 0;
 
     width: 100%;
-
+    padding: 10px;
     border: 2px solid yellow;
 
     z-index: $zFront;
@@ -18,6 +19,12 @@
     align-items: center;
 }
 
+.movieApp__headerContainer--movieInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .movieApp__resultsContainer {
     border: 2px solid red;
 
@@ -25,6 +32,31 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+
+    &.movieApp__resultsContainer--movieInfo {
+        padding-top: 0;
+    }
+}
+
+
+.movieApp__movieTitle {
+    display: block;
+    position: absolute;
+    top: 50vh;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
+    width: 100%;
+    text-align: center;
+
+    font-size: 8rem;    
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1rem;
+    /* background-color: rgba(255, 255, 255, 0.75); */
+    /* box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.75); */
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+    
 }
 
 .movieApp__newSearchBtn {
@@ -36,10 +68,21 @@
 
     border: 0;
     border-radius: 2px;
+    background-color: $goColor;
+    color: $goTextColor;
     
     font-size: 1.5rem;
 }
 
+.movieApp__ToResultsFromPickBtn {
+    height: 4rem;
+    border: none;
+    border-radius: 2px;
+    font-size: 1.5rem;
+
+    background-color: $stopColor;
+    color: $stopTextColor;
+}
 
 .movieApp__languageMenu {
     display: block;
@@ -67,13 +110,11 @@
 }
 
 .movieApp__movieBackdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    position: relative;
+    height: 100vh;
+    min-height: 100vh;
 
-    z-index: -99999;
+    z-index: $zBack;
 
     overflow: hidden; /* to scale img differently */
 }

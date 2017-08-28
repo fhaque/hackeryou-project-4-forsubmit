@@ -119,19 +119,22 @@ class MovieApp {
         const $results = this.resultsContainer.el;
 
         this.el.find('.movieApp__movieBackdrop').remove();
+        this.el.find('.movieApp__movieTitle').remove();
 
         this.resetHeaderContainer();
 
         this.searchBar.initEvents(); //re-bind event handlers
         $header.append( this.searchBar.el );
 
-        $results.empty();
+        this.resetResultsContainer();
+
         $results.append(`<p class="movieApp__searchMessage">Please try a new search.`);
     }
 
     displaySearchResults() {
         const $results = this.resultsContainer.el;
-        $results.empty();
+
+        this.resetResultsContainer();
 
         this.appendMovieListToDomElement($results, this.searchResults);
     }
@@ -141,6 +144,7 @@ class MovieApp {
         const $results = this.resultsContainer.el;
 
         this.el.find('.movieApp__movieBackdrop').remove();
+        this.el.find('.movieApp__movieTitle').remove();
 
         this.resetHeaderContainer();
         $header.addClass('movieApp__headerContainer--resultsFromPick');
@@ -160,7 +164,8 @@ class MovieApp {
         
         
 
-        $results.empty();
+        this.resetResultsContainer();
+        
         if ( this.foreignFilmResults.length === 0 ) {
             $results.append(`<p class="movieApp__searchMessage">No related ${LANGUAGES[this.foreignLanguageSelection]} movies found. Please select a different language.`);
         } else {
@@ -174,11 +179,13 @@ class MovieApp {
         const $results = this.resultsContainer.el;
 
         this.resetHeaderContainer();
+        $header.addClass('movieApp__headerContainer--movieInfo');
 
         $header.append( this.createToResultsFromPickBtn(movie) );
         $header.append( this.createNewSearchBtn() );
 
-        $results.empty();
+        this.resetResultsContainer();
+        $results.addClass('movieApp__resultsContainer--movieInfo');
         
 
         //create backdrop and fix its display
@@ -199,7 +206,11 @@ class MovieApp {
                     }      
             });
         this.el
-        .append( $(`<div>`)
+        .prepend( $('<p>')
+                    .text(movie.title)
+                    .addClass('movieApp__movieTitle') 
+        )
+        .prepend( $(`<div>`)
                 .addClass('movieApp__movieBackdrop')
                 .append($backdropImage)
         );
@@ -412,6 +423,14 @@ class MovieApp {
         $header.removeAttr('class');
         $header.addClass('movieApp__headerContainer');
         $header.empty();
+    }
+
+    resetResultsContainer() {
+        const $results = this.resultsContainer.el;
+        
+        $results.removeAttr('class');
+        $results.addClass('movieApp__resultsContainer');
+        $results.empty();
     }
 
 }

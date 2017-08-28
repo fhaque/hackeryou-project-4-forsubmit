@@ -7,6 +7,8 @@
     border-radius: 2px;
     
     overflow: hidden;
+
+    box-shadow: $baseBoxShadow;
 }
 
 .searchForm__searchBar {
@@ -38,6 +40,9 @@
 
     font-family: $textFont;
     font-size: 1.5rem;
+
+    background-color: $goColor;
+    color: $goTextColor;
 }
 
 .searchForm__searchBarLabel {

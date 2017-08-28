@@ -1,13 +1,16 @@
 .movie {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
+    // justify-content: space-evenly;
+    justify-content: space-between;
+    
+    // align-items: center;
 
     width: 30%;
     height: 40rem;
-    border-radius: 2px;
     margin-bottom: 20px;
+    padding: 15px 0px;
+    border-radius: 2px;
 
     background-color: $cardExpandedColorBg;
     box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.75);
@@ -68,8 +71,8 @@
     }
 
     & .movie__thumbnailContainer {
-        width: 8rem;
-        height: 8rem;
+        width: 7rem;
+        height: 7rem;
         margin: 0 auto;
 
         border-radius: 100%;
@@ -99,19 +102,44 @@
     }
 }
 
+.movie__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+
 .movie__title {
+    width: 90%;
+    margin: 0 auto;
+    margin-bottom: 15px;
 
     text-align: center;
     font-family: $titleFont;
     font-size: 2.5rem;
 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+.movie__thumbnail {
+    display: block;
+    margin: 0 auto;
+}
+
+.movie__rating {
+    display: none;
 }
 
 .movie__summary {
+    width: 80%;
+    margin: 0 auto;
+
     font-family: $textFont;
     font-size: 1.2rem;
-
-    width: 80%;
 }
 .movie__summary--noOverflow {
     display:block; 
@@ -121,23 +149,47 @@
     text-overflow: ellipsis;
 }
 
-.movie__rating {
-    display: none;
-}
-
 .movie__embeddedTrailerContainer {
-    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
 
-    z-index: 999999;
+    z-index: $zFront;
 
     background-color: black;
+}
 
+.movie__embeddedTrailerCloseBtn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+
+    height: 4rem;
+    padding: 0 30px;
+    border: none;
+    border-radius: 2px;
+
+    background-color: $stopColor;
+    color: $stopTextColor;
+
+    font-size: 1.5rem;
 }
 
 .movie__watchTrailerBtn {
-    font-size: 1.1rem;
+    width: 70%;
+    margin: 0 auto;
+    height: 4rem;
+    border: none;
+    border-radius: 2px;
+
+    font-size: 1.5rem;
+
+    background-color: $goColor;
+    color: $goTextColor;
 }

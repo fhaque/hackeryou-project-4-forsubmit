@@ -81,7 +81,7 @@ class ExpandableMovie extends Movie {
     expand() {
         this.getTrailerLink().then( () => {
             if ('trailerUrl' in this) {
-                this.el.append(this.createWatchTrailerBtn());
+                this.el.find('.movie__section').append(this.createWatchTrailerBtn());
             }
         });
 
@@ -97,10 +97,18 @@ class ExpandableMovie extends Movie {
         console.log('ExpandedDomElement');
 
         this.el.addClass('movie--expanded');
+
+        this.el.find('.movie__summary')
+                .text(this.overview)
+                .removeClass('.movie__summary--noOverflow');
     }
 
     unexpandDomElement() {
         this.el.removeClass('movie--expanded');
+
+        this.el.find('.movie__summary')
+                .text(this.overview.substring(0,140) + '...')
+                .addClass('.movie__summary--noOverflow');
     }
 
     createWatchTrailerBtn() {

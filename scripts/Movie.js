@@ -80,12 +80,16 @@ class Movie {
     fillDomTemplate() {
         this.el = $(
         `<article class="movie">
-            <p class="movie__title">${this.title || ""}</p>
-            <div class="movie__thumbnailContainer">
-                <img class="movie__thumbnail" src="${this.thumbnail_path || ""}" alt="">
-            </div>
-            <p class="movie__rating">${this.vote_average || ""}</p>
-            <p class="movie__summary movie_summary--noOverflow">${(this.overview.substring(0,140) + "...") || ""}</p>
+            <header class="movie__header">
+                <p class="movie__title">${this.title || ""}</p>
+                <div class="movie__thumbnailContainer">
+                    <img class="movie__thumbnail" src="${this.thumbnail_path || ""}" alt="">
+                </div>
+                <p class="movie__rating">${this.vote_average || ""}</p>
+            </header>
+            <section class="movie__section">
+                <p class="movie__summary movie_summary--noOverflow">${(this.overview.substring(0,140) + "...") || ""}</p>
+            <section>
         </article>`);
 
         //remove the voter rating if there is none

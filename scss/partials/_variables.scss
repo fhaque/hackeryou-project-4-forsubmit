@@ -2,12 +2,19 @@ $titleFont: 'Muli', sans-serif;
 $textFont: 'Lato', sans-serif;
 
 $primaryBgColor: #A9A9A9;
+$stopColor: #d10069;
+$cautionColor: #d19d00;
+$goColor: darkturquoise;
+$goTextColor: white;
+$cautionTextColor: black;
+$stopTextColor: white;
 
 $cardColorBg:white;
 $cardExpandedColorBg: rgba(255, 255, 255, 0.75);
 $cardBorderRadius: 5px;
 
 $baseBoxShadow: 0px 0px 35px 0px rgba(0,0,0,0.75);
+$secondaryBoxShadow: 0px 0px 35px 0px rgba(0,0,0,0.3);
 
 $zBack: -999999;
 $zMinus: -10;
