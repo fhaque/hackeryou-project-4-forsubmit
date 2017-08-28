@@ -9,6 +9,12 @@
 
     background-color: $cardExpandedColorBg;
 
+    @include respond-to("small") {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+
     &:hover {
         background-color: $cardExpandedColorBg;
         transform: none;
@@ -17,6 +23,10 @@
     & .movie__header {
         justify-content: flex-start;
         width: 33.33%;
+
+        @include respond-to("small") {
+            width: 100%;
+        }
     }
 
     & .movie__section {
@@ -26,6 +36,15 @@
 
         width: calc(100% - 33.33%);
         padding-left: 100px;
+
+        @include respond-to("medium") {
+            padding-left: 40px;
+        }
+
+        @include respond-to("small") {
+            padding: 20px 0;
+            width: 100%;
+        }
     }
 
     & .movie__title {
@@ -36,10 +55,23 @@
         white-space: unset;
         margin: 0 auto;
         margin-bottom: 50px;
+
+        @include respond-to("small") {
+            margin-bottom: 25px;
+        }
+
     }
 
     & .movie__summary {
         font-size: 1.5rem;
+
+        @include respond-to("large") {
+            margin-top: 0;
+            
+            white-space: unset;
+            overflow: unset;
+            text-overflow: unset;
+        }
     }
 
     & .movie__rating {

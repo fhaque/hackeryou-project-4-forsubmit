@@ -203,7 +203,8 @@ class MovieApp {
                             console.log('Title and Body text color', swatches[swatch].getTitleTextColor(), swatches[swatch].getBodyTextColor() );
 
                         }
-                    }      
+                    }
+                    window.scrollTo(0, 0); //scroll to top of page          
             });
         this.el
         .prepend( $('<p>')

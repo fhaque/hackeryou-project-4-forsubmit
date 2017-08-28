@@ -89,7 +89,7 @@ class Movie {
             </header>
             <section class="movie__section">
                 <p class="movie__summary movie_summary--noOverflow">${(this.overview.substring(0,140) + "...") || ""}</p>
-            <section>
+            </section>
         </article>`);
 
         //remove the voter rating if there is none

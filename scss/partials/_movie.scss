@@ -18,6 +18,20 @@
     -webkit-transition: all 0.4s ease;
     -o-transition: all 0.4s ease;
     transition: all 0.4s ease;
+
+    @include respond-to("large") {
+        height: auto;
+
+    }
+
+    @include respond-to("medium") {
+        width: 46%;
+    }
+
+    @include respond-to("small") {
+        width: 100%;
+    }
+
     
     &:hover {
         background-color: $cardColorBg;
@@ -41,6 +55,11 @@
 
     background-color: transparent;
     box-shadow: none;
+
+    @include respond-to("small") {
+        margin: 0 auto;
+        transform: scale(1.2,1.2);
+    }
 
     &:hover {
         background-color: transparent;
@@ -79,6 +98,11 @@
         box-shadow: $baseBoxShadow;
 
         overflow: hidden;
+
+        @include respond-to("small") {
+
+            transform: scale(1.1,1.1);
+        }
     }
 
     & .movie__thumbnail {
@@ -123,11 +147,30 @@
     overflow: hidden;
     text-overflow: ellipsis;
 
+    @include respond-to("large") {
+        font-size: 1.8rem;
+    }
+
+}
+
+.movie__thumbnailContainer {
+    @include respond-to("small") {
+        width: 9rem;
+        height: 9rem;
+        margin: 0 auto;
+        overflow: hidden;
+
+        border-radius: 100%;
+    }
 }
 
 .movie__thumbnail {
     display: block;
     margin: 0 auto;
+
+    @include respond-to("small") {
+        width: 100%;
+    }
 }
 
 .movie__rating {
@@ -140,6 +183,14 @@
 
     font-family: $textFont;
     font-size: 1.2rem;
+
+    @include respond-to("large") {
+        margin-top: 10px;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 .movie__summary--noOverflow {
     display:block; 
@@ -192,4 +243,8 @@
 
     background-color: $goColor;
     color: $goTextColor;
+
+    @include respond-to("small") {
+        margin-top: 30px;
+    }
 }

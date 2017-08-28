@@ -9,6 +9,14 @@
     overflow: hidden;
 
     box-shadow: $baseBoxShadow;
+
+    @include respond-to("medium") {
+        width: 80%;
+    }
+
+    @include respond-to("small") {
+        width: 100%;
+    }
 }
 
 .searchForm__searchBar {

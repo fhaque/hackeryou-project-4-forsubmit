@@ -6,8 +6,12 @@
 .movieApp__headerContainer {
     position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
 
-    width: 100%;
+    // width: 100%;
+    max-width: $maxContainerWidth;
+    margin: 0 auto;
     padding: 10px;
     border: 2px solid yellow;
 
@@ -17,24 +21,62 @@
 .movieApp__headerContainer--resultsFromPick {
     display: flex;
     align-items: center;
+
+    @include respond-to("small") {
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
+
+        padding-top: 0;
+        padding-bottom: 0;
+    }
 }
 
 .movieApp__headerContainer--movieInfo {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+}
+
+.movieApp__resultsContainer--searchResults
+ {
+    @include respond-to("small") {
+        padding-top: 225px;
+    }
 }
 
 .movieApp__resultsContainer {
-    border: 2px solid red;
-
-    padding-top: 150px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    
+    max-width: $maxContainerWidth;
+    margin: 0 auto;
+    padding-top: 150px;
+    border: 2px solid red;
+
+
+    @include respond-to("small") {
+        padding-top: 150px;
+    }
 
     &.movieApp__resultsContainer--movieInfo {
         padding-top: 0;
+
+        position: absolute;
+        bottom: -100%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 100%;
+
+        @include respond-to("large") {
+            position: relative;
+            top: 0;
+            left: 0;
+            transform: none;
+            
+        }
     }
 }
 
@@ -53,10 +95,23 @@
     color: white;
     text-transform: uppercase;
     letter-spacing: 1rem;
+    word-wrap: unset;
     /* background-color: rgba(255, 255, 255, 0.75); */
     /* box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.75); */
     text-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+
+    @include respond-to("large") {
+        font-size: 5rem;
+    }
+
+    @include respond-to("medium") {
+        font-size: 4.5rem;
+    }
     
+    @include respond-to("small") {
+        font-size: 3.2rem;
+        letter-spacing: 0.5rem;
+    }
 }
 
 .movieApp__newSearchBtn {
@@ -103,6 +158,15 @@
     
     font-size: 1.5rem;
 
+    @include respond-to("medium") {
+        width: 40%;
+    }
+
+    @include respond-to("small") {
+        width: 100%;
+        margin: 10px 0px;
+    }
+
     &:focus {
         outline: none;
         box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
@@ -111,12 +175,17 @@
 
 .movieApp__movieBackdrop {
     position: relative;
-    height: 100vh;
-    min-height: 100vh;
+    min-height: 200vh;
+    // height: 200vh;
 
     z-index: $zBack;
 
     overflow: hidden; /* to scale img differently */
+
+    @include respond-to("large") {
+        height: 100vh;
+        min-height: 100vh;
+    }
 }
 
 .movieApp__movieBackdrop img {
@@ -127,7 +196,15 @@
 
 .movieApp__movieBackdrop--landscape img {
     left: -25%;
-    max-width: 200%;
+    max-width: 300%;
+    min-height: 200vh;
+    height: 200vh;
+
+    @include respond-to("large") {
+        max-width: 200%;
+        min-height: 100vh;
+        height: 100vh;
+    }
     
 }
 
